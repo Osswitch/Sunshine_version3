@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Sunshine_version3</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="action_map">Map</string>
+    <string name="action_share">Share</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!--Title for the location setting-->
+    <string name="pref_location_title">Location</string>
+
+    <!--Key for the location setting-->
+    <string name="pref_location_key" translatable="false">location</string>
+
+    <!--Default value for the location setting-->
+    <string name="pref_location_defValue" translatable="false">Montreal</string>
+
+    <!--Title for the temperature units setting-->
+    <string name="pref_unit_title">Temperature Units</string>
+
+    <!--Key for the temperature units setting-->
+    <string name="pref_unit_key">unit</string>
+
+    <string name="unit_entries_metric">Metric</string>
+    <string name="unit_entries_imperial">Imperial</string>
+    <string name="unit_entryVaule_metric">metric</string>
+    <string name="unit_entryValue_imperial">imperial</string>
+
+    <!--Entries for the temperature units setting-->
+    <string-array name="pref_unit_entries">
+        <item>@string/unit_entries_metric</item>
+        <item>@string/unit_entries_imperial</item>
+    </string-array>
+
+    <!--Entry Value arrays for the temperature units setting-->
+    <string-array name="pref_unit_entryValues">
+        <item>@string/unit_entryVaule_metric</item>
+        <item>@string/unit_entryValue_imperial</item>
+    </string-array>
+
+    <!--Default value for the temperature unit setting-->
+    <string name="pref_unit_defValue">metric</string>
+
+</resources>
