@@ -5,3 +5,8 @@
 .DS_Store
 /build
 /captures
+.idea/
+.idea/.name
+*.iml
+*.ipr
+*.iws
