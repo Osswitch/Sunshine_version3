@@ -1,3 +1,3 @@
 # Sunshine_version3
 
-Let's play.
+Replace your own api key from openweathermap in app/src/main/res/values/API_KEY.xml
