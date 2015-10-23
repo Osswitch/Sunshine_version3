@@ -269,6 +269,7 @@ public class WeatherProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int rowsDeleted;
 
+        // this makes delete all rows return the number of rows deleted
         if (selection == null) {
             selection = "1";
         }
@@ -291,7 +292,7 @@ public class WeatherProvider extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unknow uri " + uri);
+                throw new UnsupportedOperationException("Unknown uri " + uri);
         }
 
         // Student: A null value deletes all rows.  In my implementation of this, I only notified
@@ -318,7 +319,37 @@ public class WeatherProvider extends ContentProvider {
             Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         // Student: This is a lot like the delete function.  We return the number of rows impacted
         // by the update.
-        return 0;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int rowsUpdated;
+
+        switch (match) {
+            case WEATHER: {
+                rowsUpdated = db.update(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            }
+            case LOCATION: {
+                rowsUpdated = db.update(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri " + uri);
+        }
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override
