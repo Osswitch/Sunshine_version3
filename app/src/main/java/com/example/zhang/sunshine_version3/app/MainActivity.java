@@ -85,30 +85,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.v(LOG_TAG, "This is onStart");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.v(LOG_TAG, "This is onPause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(LOG_TAG, "This is onResume");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.v(LOG_TAG, "This is onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(LOG_TAG, "This is onDestory");
     }
 }

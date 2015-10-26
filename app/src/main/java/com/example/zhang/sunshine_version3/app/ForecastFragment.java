@@ -1,8 +1,10 @@
 package com.example.zhang.sunshine_version3.app;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +20,7 @@ import com.example.zhang.sunshine_version3.app.data.WeatherContract;
  */
 public class ForecastFragment extends Fragment {
 
-    //private static final String Log_Tag = ForecastFragment.class.getSimpleName();
+    private static final String Log_Tag = ForecastFragment.class.getSimpleName();
 
     ForecastAdapter mForecastAdapter;
 
@@ -64,13 +66,18 @@ public class ForecastFragment extends Fragment {
 
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
 
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry
+                .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
+
         Cursor cursor = getActivity().getContentResolver().query(
-                WeatherContract.LocationEntry.CONTENT_URI,
+                weatherForLocationUri,
                 null,
                 null,
                 null,
                 sortOrder
         );
+
+        Log.v(Log_Tag, Integer.toString(cursor.getCount()));
 
         mForecastAdapter = new ForecastAdapter(
                 getActivity(),
