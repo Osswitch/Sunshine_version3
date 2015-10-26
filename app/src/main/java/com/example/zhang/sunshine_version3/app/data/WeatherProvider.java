@@ -188,6 +188,7 @@ public class WeatherProvider extends ContentProvider {
             // "weather/*"
             case WEATHER_WITH_LOCATION: {
                 retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
+                int i = retCursor.getCount();
                 break;
             }
             // "weather"

@@ -69,6 +69,7 @@ public class ForecastFragment extends Fragment {
         Uri weatherForLocationUri = WeatherContract.WeatherEntry
                 .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
 
+        Log.v(Log_Tag, "Type is " + getActivity().getContentResolver().getType(weatherForLocationUri));
         Cursor cursor = getActivity().getContentResolver().query(
                 weatherForLocationUri,
                 null,
@@ -76,8 +77,7 @@ public class ForecastFragment extends Fragment {
                 null,
                 sortOrder
         );
-
-        Log.v(Log_Tag, Integer.toString(cursor.getCount()));
+        
 
         mForecastAdapter = new ForecastAdapter(
                 getActivity(),
