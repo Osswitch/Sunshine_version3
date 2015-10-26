@@ -4,7 +4,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,10 +20,11 @@ import com.example.zhang.sunshine_version3.app.data.WeatherContract;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String Log_Tag = ForecastFragment.class.getSimpleName();
 
+    private static final int FETCHER_WEATHER_LOADER_ID = 0;
     ForecastAdapter mForecastAdapter;
 
 
@@ -62,26 +65,9 @@ public class ForecastFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String locationSetting = Utility.getPreferredLocation(getActivity());
-
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry
-                .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
-
-        Log.v(Log_Tag, "Type is " + getActivity().getContentResolver().getType(weatherForLocationUri));
-        Cursor cursor = getActivity().getContentResolver().query(
-                weatherForLocationUri,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        
-
         mForecastAdapter = new ForecastAdapter(
                 getActivity(),
-                cursor,
+                null,
                 0
         );
 
@@ -91,6 +77,41 @@ public class ForecastFragment extends Fragment {
 
         return rootView;
         //return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(FETCHER_WEATHER_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry
+                .buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
+
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+
+        return new CursorLoader(
+                getActivity(),
+                weatherForLocationUri,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        mForecastAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mForecastAdapter.swapCursor(null);
     }
 
     public void updateWeather() {
