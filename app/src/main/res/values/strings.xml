@@ -26,7 +26,7 @@
 
     <string name="unit_entries_metric">Metric</string>
     <string name="unit_entries_imperial">Imperial</string>
-    <string name="unit_entryVaule_metric">metric</string>
+    <string name="unit_entryValue_metric">metric</string>
     <string name="unit_entryValue_imperial">imperial</string>
 
     <!--Entries for the temperature units setting-->
@@ -37,7 +37,7 @@
 
     <!--Entry Value arrays for the temperature units setting-->
     <string-array name="pref_unit_entryValues">
-        <item>@string/unit_entryVaule_metric</item>
+        <item>@string/unit_entryValue_metric</item>
         <item>@string/unit_entryValue_imperial</item>
     </string-array>
 
