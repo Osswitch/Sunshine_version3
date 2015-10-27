@@ -163,6 +163,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.swapCursor(null);
     }
 
+    public void onLocationChanged() {
+        updateWeather();
+        getLoaderManager().restartLoader(FETCHER_WEATHER_LOADER_ID, null, this);
+    }
+
     public void updateWeather() {
 
         FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity());
@@ -170,11 +175,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         fetchWeatherTask.execute(location);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateWeather();
-    }
 
 //    private class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
 //
