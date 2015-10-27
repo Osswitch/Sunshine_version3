@@ -7,7 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,6 +25,8 @@ import com.example.zhang.sunshine_version3.app.data.WeatherContract;
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    private ShareActionProvider mShareActionProvider;
+    private static String FORECAST_SHARE_HASHTAG = " #SUNSHINEAPP";
 
     private static final int DETAIL_WEATHER_LOADER_ID = 0;
 
@@ -44,11 +51,51 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_detail, menu);
+        //Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        //Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mForecastStr != null) {
+            mShareActionProvider.setShareIntent(shareForecastIntent());
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            Intent intentSetting = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intentSetting);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private Intent shareForecastIntent(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, mForecastStr + FORECAST_SHARE_HASHTAG);
+        return intent;
     }
 
     @Override
@@ -94,8 +141,12 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mForecastStr = date + " - " + weatherDescription + " - " + maxTemperature
                 + " / " + minTemperature;
         TextView textView = (TextView) getView().findViewById(R.id.fragment_detail_textView);
-
         textView.setText(mForecastStr);
+
+        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareForecastIntent());
+        }
 
     }
 
@@ -103,4 +154,5 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
+
 }
