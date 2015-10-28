@@ -13,19 +13,12 @@ public class MainActivity extends AppCompatActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private String mLocation;
-    private String FORECASTFRAGMENT_TAG = "FFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mLocation = Utility.getPreferredLocation(this);
-
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.fragment, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-//                    .commit();
-//        }
 
     }
 
@@ -50,18 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }else if (id == R.id.action_map) {
-            /*String location = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getString(getString(R.string.pref_location_key),
-                            getString(R.string.pref_location_defValue));
-            Uri geoLocatinon = Uri.parse("geo:0,0?").buildUpon()
-                    .appendQueryParameter("q", location).build();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoLocatinon);
-            if (intent.resolveActivity(getPackageManager()) != null){
-                startActivity(intent);
-            }else {
-                Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
-            }*/
+
             openPreferredLocationInMap();
             return true;
         }
