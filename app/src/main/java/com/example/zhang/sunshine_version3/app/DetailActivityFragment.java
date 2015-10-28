@@ -65,6 +65,12 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(DETAIL_WEATHER_LOADER_ID, null, this);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_detail, menu);
         //Retrieve the share menu item
