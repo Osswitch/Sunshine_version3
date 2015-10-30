@@ -134,9 +134,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         String weatherDescription = cursor.getString(COL_WEATHER_SHORT_DESC);
         Boolean isMetric = Utility.isMetric(getActivity());
         String maxTemperature = Utility
-                .formatTemperature(cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+                .formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
         String minTemperature = Utility
-                .formatTemperature(cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+                .formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
 
         mForecastStr = date + " - " + weatherDescription + " - " + maxTemperature
                 + " / " + minTemperature;
