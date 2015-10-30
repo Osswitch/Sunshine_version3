@@ -33,7 +33,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     private String mForecastStr;
 
-    private static final String[] FORECAST_COLUMNS= {
+    private static final String[] DETAIL_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATE,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
@@ -148,7 +148,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         return new CursorLoader(
                 getActivity(),
                 intent.getData(),
-                FORECAST_COLUMNS,
+                DETAIL_COLUMNS,
                 null,
                 null,
                 null
@@ -162,8 +162,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             return;
         }
 
-        String day = Utility.formatDate(cursor.getLong(COL_WEATHER_DATE));
-        String date = Utility.formatDate(cursor.getLong(COL_WEATHER_DATE));
+        String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
+        String date = Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String weatherDescription = cursor.getString(COL_WEATHER_SHORT_DESC);
         Boolean isMetric = Utility.isMetric(getActivity());
         String maxTemperature = Utility
@@ -172,8 +172,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 .formatTemperature(getActivity(), cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
         float humidity = cursor.getFloat(COL_WEATHER_HUMIDITY);
 
-        float windSpeedStr = cursor.getFloat(COL_WEATHER_WIND_SPEED);
-        float windDirStr = cursor.getFloat(COL_WEATHER_DEGREES);
+        float windSpeed = cursor.getFloat(COL_WEATHER_WIND_SPEED);
+        float windDir = cursor.getFloat(COL_WEATHER_DEGREES);
+        String windDesc = Utility.getFormattedWind(getActivity(), windSpeed, windDir);
 
         float pressure = cursor.getFloat(COL_WEATHER_PRESSURE);
 
@@ -188,11 +189,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         mLowTempView.setText(minTemperature);
 
-        mHumidityView.setText(Float.toString(humidity));
+        mHumidityView.setText(String.format(getActivity().
+                getString(R.string.format_humidity), humidity));
 
-        mWindView.setText(Float.toString(windSpeedStr) + " " + Float.toString(windDirStr));
+        mWindView.setText(windDesc);
 
-        mPressureView.setText(Float.toString(pressure));
+        mPressureView.setText(String.format(getActivity().
+                getString(R.string.format_pressure), pressure));
 
         mIconView.setImageResource(R.mipmap.ic_launcher);
 
