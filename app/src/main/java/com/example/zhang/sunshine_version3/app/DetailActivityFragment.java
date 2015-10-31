@@ -162,6 +162,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             return;
         }
 
+        int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
+        mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+
         String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String date = Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String weatherDescription = cursor.getString(COL_WEATHER_SHORT_DESC);
@@ -196,8 +199,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         mPressureView.setText(String.format(getActivity().
                 getString(R.string.format_pressure), pressure));
-
-        mIconView.setImageResource(R.mipmap.ic_launcher);
 
         mDescriptionView.setText(weatherDescription);
 
