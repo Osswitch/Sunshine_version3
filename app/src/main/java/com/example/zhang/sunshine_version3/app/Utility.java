@@ -237,7 +237,7 @@ public class Utility {
         } else if (weatherId >= 520 && weatherId <= 531) {
             return R.drawable.art_rain;
         } else if (weatherId >= 600 && weatherId <= 622) {
-            return R.drawable.art_rain;
+            return R.drawable.art_snow;
         } else if (weatherId >= 701 && weatherId <= 761) {
             return R.drawable.art_fog;
         } else if (weatherId == 761 || weatherId == 781) {
@@ -248,9 +248,9 @@ public class Utility {
             return R.drawable.art_light_clouds;
         } else if (weatherId >= 802 && weatherId <= 804) {
             return R.drawable.art_clouds;
-        } else {
-            return -1;
         }
+
+        return -1;
 
     }
 }
