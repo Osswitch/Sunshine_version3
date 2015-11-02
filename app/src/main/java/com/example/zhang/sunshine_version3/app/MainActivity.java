@@ -111,6 +111,11 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             if (ff != null) {
                 ff.onLocationChanged();
             }
+            DetailActivityFragment df = (DetailActivityFragment) getSupportFragmentManager()
+                    .findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (df != null) {
+                df.onLocationChanged(location);
+            }
             mLocation = location;
         }
     }
