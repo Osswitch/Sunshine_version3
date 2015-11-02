@@ -141,7 +141,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         Intent intent = getActivity().getIntent();
 
-        if (intent == null) {
+        if (intent == null || intent.getData() == null      ) {
             return null;
         }
 

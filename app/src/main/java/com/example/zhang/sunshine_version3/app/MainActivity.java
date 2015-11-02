@@ -12,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+
+    private boolean mTwoPane;
     private String mLocation;
 
     @Override
@@ -20,6 +23,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mLocation = Utility.getPreferredLocation(this);
 
+        if (findViewById(R.id.weather_detail_container) != null) {
+            // The detail container view will be present only in the large-screen layouts
+            // (res/layout-sw600dp). If this view is present, then the activity should be
+            // in two-pane mode.
+            mTwoPane = true;
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container,
+                                new DetailActivityFragment(), DETAILFRAGMENT_TAG).commit();
+                Log.v(LOG_TAG, "two pane");
+            }
+        } else {
+            mTwoPane = false;
+            Log.v(LOG_TAG, "one pane");
+        }
     }
 
     @Override
@@ -88,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         String location = Utility.getPreferredLocation(this);
         if (location != null && mLocation != location) {
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager()
-                    .findFragmentById(R.id.fragment);
+                    .findFragmentById(R.id.fragment_forecast);
             if (ff != null) {
                 ff.onLocationChanged();
             }
