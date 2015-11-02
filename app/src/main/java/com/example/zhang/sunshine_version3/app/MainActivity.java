@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -35,11 +35,9 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.weather_detail_container,
                                 new DetailActivityFragment(), DETAILFRAGMENT_TAG).commit();
-                Log.v(LOG_TAG, "two pane");
             }
         } else {
             mTwoPane = false;
-            Log.v(LOG_TAG, "one pane");
         }
     }
 
@@ -114,6 +112,19 @@ public class MainActivity extends AppCompatActivity {
                 ff.onLocationChanged();
             }
             mLocation = location;
+        }
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+        if (mTwoPane) {
+            DetailActivityFragment df = new DetailActivityFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, df).addToBackStack(null).commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class).setData(dateUri);
+            startActivity(intent);
+
         }
     }
 
