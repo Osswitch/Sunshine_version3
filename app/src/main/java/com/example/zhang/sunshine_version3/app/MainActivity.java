@@ -118,9 +118,14 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     @Override
     public void onItemSelected(Uri dateUri) {
         if (mTwoPane) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(DetailActivityFragment.DETAIL_URI, dateUri);
+
             DetailActivityFragment df = new DetailActivityFragment();
+            df.setArguments(bundle);
+
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.weather_detail_container, df).addToBackStack(null).commit();
+                    .replace(R.id.weather_detail_container, df).commit();
         } else {
             Intent intent = new Intent(this, DetailActivity.class).setData(dateUri);
             startActivity(intent);

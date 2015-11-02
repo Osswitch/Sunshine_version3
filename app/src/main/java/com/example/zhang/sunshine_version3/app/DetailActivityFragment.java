@@ -2,6 +2,7 @@ package com.example.zhang.sunshine_version3.app;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -30,8 +31,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static String FORECAST_SHARE_HASHTAG = " #SUNSHINEAPP";
 
     private static final int DETAIL_WEATHER_LOADER_ID = 0;
+    public static final String DETAIL_URI = "URI";
 
     private String mForecastStr;
+
+    private Uri mUri;
 
     private static final String[] DETAIL_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
@@ -110,18 +114,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Intent intentSetting = new Intent(getActivity(), SettingsActivity.class);
-            startActivity(intentSetting);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private Intent shareForecastIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -139,20 +131,20 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Intent intent = getActivity().getIntent();
+        if (getArguments() != null) {
+            mUri = getArguments().getParcelable(DETAIL_URI);
 
-        if (intent == null || intent.getData() == null      ) {
-            return null;
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    DETAIL_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
         }
 
-        return new CursorLoader(
-                getActivity(),
-                intent.getData(),
-                DETAIL_COLUMNS,
-                null,
-                null,
-                null
-        );
+        return null;
     }
 
     @Override
