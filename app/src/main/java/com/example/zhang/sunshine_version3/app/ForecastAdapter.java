@@ -15,6 +15,8 @@ import android.widget.TextView;
  */
 public class ForecastAdapter extends CursorAdapter {
 
+    private static final String LOG_TAG = ForecastAdapter.class.getSimpleName();
+
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private static final int VIEW_TYPE_COUNT =2;
@@ -58,9 +60,10 @@ public class ForecastAdapter extends CursorAdapter {
         return VIEW_TYPE_COUNT;
     }
 
+
     /*
-                Remember that these views are reused as needed.
-             */
+    * Remember that these views are reused as needed.
+    * */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         //Choose the layout type
@@ -126,6 +129,5 @@ public class ForecastAdapter extends CursorAdapter {
         // Read low temperature from cursor
         double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         viewHolder.lowTempView.setText(Utility.formatTemperature(context, low, isMetric));
-
     }
 }

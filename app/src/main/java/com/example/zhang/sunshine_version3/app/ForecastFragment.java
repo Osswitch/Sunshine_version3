@@ -23,7 +23,7 @@ import com.example.zhang.sunshine_version3.app.data.WeatherContract;
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String Log_Tag = ForecastFragment.class.getSimpleName();
+    private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     private static final int FETCHER_WEATHER_LOADER_ID = 0;
 
@@ -79,7 +79,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public ForecastFragment() {
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +123,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         mListView = (ListView) rootView.findViewById(R.id.listView_forecast);
         mListView.setAdapter(mForecastAdapter);
+        int n = mListView.getCount();
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -146,8 +146,27 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
 
+
+        /*if (!mUseTodayLayout){
+            if (mPosition == ListView.INVALID_POSITION) {
+                mListView.performItemClick(mListView.getAdapter().getView(0,null,null), 0, mListView.getAdapter().getItemId(0));
+            }
+            mListView.performItemClick(mListView.getChildAt(0), 0, mListView.getItemIdAtPosition(0));
+        }*/
+
         return rootView;
         //return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -191,6 +210,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.swapCursor(cursor);
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mPosition);
+        }
+        if (!mUseTodayLayout) {
+            if (mPosition == ListView.INVALID_POSITION) {
+                mListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //mListView.performItemClick(mListView.getChildAt(0), 0, mListView.getItemIdAtPosition(0));
+                        mListView.performItemClick(null, 0, 0);
+                    }
+                });
+            }
         }
     }
 
