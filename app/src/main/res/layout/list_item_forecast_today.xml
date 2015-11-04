@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Layout for weather forecast list item for today-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:background="@drawable/today_touch_selector">
 
@@ -10,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="8"
+        android:layout_weight="7"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="60dp">
