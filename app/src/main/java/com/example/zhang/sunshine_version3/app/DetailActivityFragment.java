@@ -160,6 +160,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
         mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
+
         String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String date = Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String weatherDescription = cursor.getString(COL_WEATHER_SHORT_DESC);
@@ -196,6 +197,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 getString(R.string.format_pressure), pressure));
 
         mDescriptionView.setText(weatherDescription);
+
+        mIconView.setContentDescription(weatherDescription);
 
         // If onCreateOptionsMenu has already happened, we need to update the share intent now.
         if (mShareActionProvider != null) {
