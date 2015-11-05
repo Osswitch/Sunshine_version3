@@ -146,14 +146,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
 
-
-        /*if (!mUseTodayLayout){
-            if (mPosition == ListView.INVALID_POSITION) {
-                mListView.performItemClick(mListView.getAdapter().getView(0,null,null), 0, mListView.getAdapter().getItemId(0));
-            }
-            mListView.performItemClick(mListView.getChildAt(0), 0, mListView.getItemIdAtPosition(0));
-        }*/
-
         return rootView;
         //return inflater.inflate(R.layout.fragment_main, container, false);
     }
@@ -208,9 +200,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
+
         if (mPosition != ListView.INVALID_POSITION) {
+            mListView.setItemChecked(mPosition, true);
             mListView.smoothScrollToPosition(mPosition);
         }
+
         if (!mUseTodayLayout) {
             if (mPosition == ListView.INVALID_POSITION) {
                 mListView.post(new Runnable() {
