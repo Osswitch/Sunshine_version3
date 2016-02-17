@@ -162,7 +162,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         String i = Utility.getArtUrlResourceForWeatherCondition(getActivity(), weatherId);
         Glide.with(this)
                 .load(Utility.getArtUrlResourceForWeatherCondition(getActivity(), weatherId))
-                .error(R.mipmap.ic_launcher)
+                .error(Utility.getArtResourceForWeatherCondition(weatherId))
                 .into(mIconView);
 
         String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
