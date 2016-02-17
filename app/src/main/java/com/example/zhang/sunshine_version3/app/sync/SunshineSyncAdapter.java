@@ -2,6 +2,7 @@ package com.example.zhang.sunshine_version3.app.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
@@ -27,6 +28,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
 import com.example.zhang.sunshine_version3.app.MainActivity;
 import com.example.zhang.sunshine_version3.app.R;
 import com.example.zhang.sunshine_version3.app.Utility;
@@ -43,6 +45,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by zhang on 06/11/15.
@@ -250,8 +253,34 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     int iconId = Utility.getIconResourceForWeatherCondition(weatherId);
                     Resources resources = context.getResources();
-                    Bitmap largeIcon = BitmapFactory.decodeResource(resources,
-                            Utility.getArtResourceForWeatherCondition(weatherId));
+
+                    // On Honeycomb and higher devices, we can retrieve the size of the large icon
+                    // Prior to that, we use a fixed size
+                    @SuppressLint("InlinedApi")
+                    int largeIconWidth = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+                            ? resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+                            : resources.getDimensionPixelSize(R.dimen.notification_large_icon_default);
+                    @SuppressLint("InlinedApi")
+                    int largeIconHeight = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+                            ? resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
+                            : resources.getDimensionPixelSize(R.dimen.notification_large_icon_default);
+
+                    Bitmap largeIcon;
+
+                    try {
+                        largeIcon = Glide.with(context)
+                                .load(Utility.getArtUrlResourceForWeatherCondition(context, weatherId))
+                                .asBitmap()
+                                .error(Utility.getArtResourceForWeatherCondition(weatherId))
+                                .fitCenter()
+                                .into(largeIconWidth, largeIconHeight)
+                                .get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        Log.e(LOG_TAG, "Error retriving large icon from "
+                                + Utility.getArtUrlResourceForWeatherCondition(context, weatherId), e);
+                        largeIcon = BitmapFactory.decodeResource(resources, Utility.getArtResourceForWeatherCondition(weatherId));
+                    }
+
                     String title = context.getString(R.string.app_name);
 
                     // Define the text of the forecast.
