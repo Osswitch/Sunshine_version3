@@ -52,6 +52,32 @@
     <!--Default value for the temperature unit setting-->
     <string name="pref_unit_defValue">metric</string>
 
+    <!-- Icon pack values -->
+    <string name="pref_icon_title">Icon Pack</string>
+    
+    <string name="pref_icon_key">icon</string>
+
+    <string name="icon_entries_original">Original</string>
+    <string name="icon_entries_colored">Colored</string>
+    <string name="icon_entries_mono">Mono</string>
+    <string name="icon_entryValue_original">original</string>
+    <string name="icon_entryValue_colored">colored</string>
+    <string name="icon_entryValue_mono">mono</string>
+
+    <string-array name="pref_icon_entries">
+        <item>@string/icon_entries_original</item>
+        <item>@string/icon_entries_colored</item>
+        <item>@string/icon_entries_mono</item>
+    </string-array>
+
+    <string-array name="pref_icon_entryValues">
+        <item>@string/icon_entryValue_colored</item>
+        <item>@string/icon_entryValue_colored</item>
+        <item>@string/icon_entryValue_mono</item>
+    </string-array>
+
+    <string name="pref_icon_defValue">original</string>
+
 
     <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
     <string name="today">Today</string>
