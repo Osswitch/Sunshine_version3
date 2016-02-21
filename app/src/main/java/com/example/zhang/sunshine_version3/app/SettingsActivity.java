@@ -31,7 +31,7 @@ public class SettingsActivity extends PreferenceActivity
         // TODO: Add preferences
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_icon_key)));
     }
 
     /**
