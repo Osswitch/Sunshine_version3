@@ -60,9 +60,9 @@
     <string name="icon_entries_original">Original</string>
     <string name="icon_entries_colored">Colored</string>
     <string name="icon_entries_mono">Mono</string>
-    <string name="icon_entryValue_original">original</string>
-    <string name="icon_entryValue_colored">colored</string>
-    <string name="icon_entryValue_mono">mono</string>
+    <string name="icon_entryValue_original" translatable="false">https://raw.githubusercontent.com/Osswitch/Sunshine_version3/master/app/src/main/res/drawable-xxhdpi/art_%s.png</string>
+    <string name="icon_entryValue_colored" translatable="false">https://raw.githubusercontent.com/Osswitch/Sunshine_version3/master/app/src/main/res/drawable/colored_art_%s.png</string>
+    <string name="icon_entryValue_mono" translatable="false">https://raw.githubusercontent.com/Osswitch/Sunshine_version3/master/app/src/main/res/drawable/mono_art_%s.png</string>
 
     <string-array name="pref_icon_entries">
         <item>@string/icon_entries_original</item>
