@@ -22,6 +22,8 @@ package com.example.zhang.sunshine_version3.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 
@@ -32,6 +34,21 @@ import java.util.Locale;
 
 
 public class Utility {
+
+    // Acquiring network state to decide whether using glide downloading icon from network or using drawable.
+    public static int getNetworkType(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null) {
+            return networkInfo.getType();
+        } else {
+            return -1;
+        }
+    }
+
     public static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_location_key),

@@ -2,6 +2,7 @@ package com.example.zhang.sunshine_version3.app;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -159,11 +160,17 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
 
         int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
-        String i = Utility.getArtUrlResourceForWeatherCondition(getActivity(), weatherId);
-        Glide.with(this)
-                .load(Utility.getArtUrlResourceForWeatherCondition(getActivity(), weatherId))
-                .error(Utility.getArtResourceForWeatherCondition(weatherId))
-                .into(mIconView);
+
+        int networkType = Utility.getNetworkType(getActivity());
+
+        if (networkType == ConnectivityManager.TYPE_WIFI) {
+            Glide.with(this)
+                    .load(Utility.getArtUrlResourceForWeatherCondition(getActivity(), weatherId))
+                    .error(Utility.getArtResourceForWeatherCondition(weatherId))
+                    .into(mIconView);
+        } else {
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+        }
 
         String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
         String date = Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE));

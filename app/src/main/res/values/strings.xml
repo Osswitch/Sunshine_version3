@@ -78,6 +78,9 @@
 
     <string name="pref_icon_defValue">original</string>
 
+    <!-- indicated you are under no wifi environment -->
+    <string name="no_wifi">You need to download other icon under WIFI environment.</string>
+
 
     <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
     <string name="today">Today</string>

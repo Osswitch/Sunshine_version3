@@ -2,6 +2,7 @@ package com.example.zhang.sunshine_version3.app;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,11 +112,19 @@ public class ForecastAdapter extends CursorAdapter {
             }
         }
 
-        Glide.with(mContext)
-                .load(Utility.getArtUrlResourceForWeatherCondition(mContext, weatherId))
-                .error(backupIconId)
-                .crossFade()
-                .into(viewHolder.iconView);
+        int networkType = Utility.getNetworkType(context);
+
+        if (networkType == ConnectivityManager.TYPE_WIFI) {
+            Glide.with(mContext)
+                    .load(Utility.getArtUrlResourceForWeatherCondition(mContext, weatherId))
+                    .error(backupIconId)
+                    .crossFade()
+                    .into(viewHolder.iconView);
+        } else {
+            viewHolder.iconView.setImageResource(backupIconId);
+        }
+
+
 
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);

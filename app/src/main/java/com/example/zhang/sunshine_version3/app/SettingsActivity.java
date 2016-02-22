@@ -2,6 +2,7 @@ package com.example.zhang.sunshine_version3.app;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -28,6 +29,12 @@ public class SettingsActivity extends PreferenceActivity
         addPreferencesFromResource(R.xml.pref_general);
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
+        Preference iconPreference = getPreferenceManager().findPreference(this.getString(R.string.pref_icon_key));
+        int networkType = Utility.getNetworkType(this);
+
+        if (networkType != ConnectivityManager.TYPE_WIFI) {
+            iconPreference.setEnabled(false);
+        }
         // TODO: Add preferences
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
@@ -58,10 +65,19 @@ public class SettingsActivity extends PreferenceActivity
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list (since they have separate labels/values).
+            // if the list preference is for icon pack make the value dedicated.
+            int networkType = Utility.getNetworkType(this);
+
             ListPreference listPreference = (ListPreference) preference;
             int prefIndex = listPreference.findIndexOfValue(stringValue);
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
+            }
+
+            if (networkType != ConnectivityManager.TYPE_WIFI) {
+                if (preference == findPreference(this.getString(R.string.pref_icon_key))) {
+                    preference.setSummary(this.getString(R.string.no_wifi));
+                }
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.

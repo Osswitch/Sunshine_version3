@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -240,10 +241,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Last sync was more than 1 day ago, let's send a notification with the weather.
                 String locationQuery = Utility.getPreferredLocation(context);
 
-                Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
+                Uri weatherUri = WeatherContract.WeatherEntry
+                        .buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
 
                 // we'll query our contentProvider, as always
-                Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
+                Cursor cursor = context.getContentResolver()
+                        .query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
 
                 if (cursor.moveToFirst()) {
                     int weatherId = cursor.getInt(INDEX_WEATHER_ID);
@@ -268,17 +271,26 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     Bitmap largeIcon;
 
                     try {
-                        largeIcon = Glide.with(context)
-                                .load(Utility.getArtUrlResourceForWeatherCondition(context, weatherId))
-                                .asBitmap()
-                                .error(Utility.getArtResourceForWeatherCondition(weatherId))
-                                .fitCenter()
-                                .into(largeIconWidth, largeIconHeight)
-                                .get();
+                        int networkType = Utility.getNetworkType(context);
+
+                        if (networkType == ConnectivityManager.TYPE_WIFI) {
+                            largeIcon = Glide.with(context)
+                                    .load(Utility.getArtUrlResourceForWeatherCondition(context, weatherId))
+                                    .asBitmap()
+                                    .error(Utility.getArtResourceForWeatherCondition(weatherId))
+                                    .fitCenter()
+                                    .into(largeIconWidth, largeIconHeight)
+                                    .get();
+                        } else {
+                            largeIcon = BitmapFactory.decodeResource(resources,
+                                    Utility.getArtResourceForWeatherCondition(weatherId));
+                        }
+
                     } catch (InterruptedException | ExecutionException e) {
                         Log.e(LOG_TAG, "Error retriving large icon from "
                                 + Utility.getArtUrlResourceForWeatherCondition(context, weatherId), e);
-                        largeIcon = BitmapFactory.decodeResource(resources, Utility.getArtResourceForWeatherCondition(weatherId));
+                        largeIcon = BitmapFactory.decodeResource(resources,
+                                Utility.getArtResourceForWeatherCondition(weatherId));
                     }
 
                     String title = context.getString(R.string.app_name);
