@@ -126,8 +126,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         mListView = (ListView) rootView.findViewById(R.id.listView_forecast);
+        mListView.setEmptyView(rootView.findViewById(R.id.textview_empty));
         mListView.setAdapter(mForecastAdapter);
-        int n = mListView.getCount();
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

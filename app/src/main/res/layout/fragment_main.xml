@@ -11,4 +11,10 @@
         android:id="@+id/listView_forecast"
         android:divider="@null"
         style="@style/ForecastListStyle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/textview_empty"
+        android:text="@string/empty_view"/>
 </FrameLayout>

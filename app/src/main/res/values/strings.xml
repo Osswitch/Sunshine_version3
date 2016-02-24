@@ -8,6 +8,8 @@
     <string name="action_share">Share</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    
+    <string name="empty_view">No Weather Information Available</string>
 
     <!--Title for the location setting-->
     <string name="pref_location_title">Location</string>
