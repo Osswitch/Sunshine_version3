@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.zhang.sunshine_version3.app.data.WeatherContract;
 import com.example.zhang.sunshine_version3.app.sync.SunshineSyncAdapter;
@@ -204,7 +205,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+
         mForecastAdapter.swapCursor(cursor);
+
+        if (mForecastAdapter.getCount() == 0) {
+            TextView textView = (TextView) getView().findViewById(R.id.textview_empty);
+
+            if (null != textView) {
+
+                int messageId = R.string.empty_view;
+                if ( !Utility.isNetworkAvailable(getActivity())) {
+                    messageId = R.string.empty_view_no_network;
+                }
+
+                textView.setText(messageId);
+            }
+        }
 
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.setItemChecked(mPosition, true);

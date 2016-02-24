@@ -8,8 +8,12 @@
     <string name="action_share">Share</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    
+
+    <!-- Indicating there are no messages -->
     <string name="empty_view">No Weather Information Available</string>
+
+    <!-- Indicating there are no messages because of the lack of network -->
+    <string name="empty_view_no_network">No Weather Information Available Because The Lack Of Network</string>
 
     <!--Title for the location setting-->
     <string name="pref_location_title">Location</string>
