@@ -59,6 +59,15 @@ public class Utility {
 
     }
 
+    // Resetting current location status to UNKNOWN
+    @SuppressWarnings("ResourceType")
+    public static void resetLocationStatus(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor spe = sharedPreferences.edit();
+        spe.putInt(context.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+        spe.apply();
+    }
+
     // Return true if the network is connected
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context

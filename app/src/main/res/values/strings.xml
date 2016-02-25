@@ -10,22 +10,26 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Indicating there are no messages -->
-    <string name="empty_view">No Weather Information Available</string>
+    <string name="empty_view">No Weather Information Available.</string>
 
     <!-- Indicating there are no messages because of the lack of network -->
-    <string name="empty_view_no_network">No Weather Information Available Because The Lack Of Network</string>
+    <string name="empty_view_no_network">No Weather Information Available Because The Lack Of Network.</string>
 
     <!-- Indicating server down -->
-    <string name="empty_forecast_list_server_down">No weather information available. The server is not returning data</string>
+    <string name="empty_forecast_list_server_down">No weather information available. The server is not returning data.</string>
 
     <!-- Indicating server error -->
     <string name="empty_forecast_list_server_error">No weather information available. The server is not returning valid data. Please check for an updated version of Sunshine.</string>
+
+    <!-- Indicating location invalid -->
+    <string name="empty_forecast_list_invalid_location" translatable="false">No weather information available. The location in settings is not recognized by the weather server.</string>
 
     <!--Title for the location setting-->
     <string name="pref_location_title">Location</string>
 
     <!-- Key name for storing location in SharedPreference -->
     <string name="pref_location_status_key" translatable="false">loc-status</string>
+
 
     <!--Key for the location setting-->
     <string name="pref_location_key" translatable="false">location</string>
