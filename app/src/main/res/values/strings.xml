@@ -18,6 +18,9 @@
     <!--Title for the location setting-->
     <string name="pref_location_title">Location</string>
 
+    <!-- Key name for storing location in SharedPreference -->
+    <string name="pref_location_status_key" translatable="false">loc-status</string>
+
     <!--Key for the location setting-->
     <string name="pref_location_key" translatable="false">location</string>
 

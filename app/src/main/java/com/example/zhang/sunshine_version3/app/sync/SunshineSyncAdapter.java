@@ -78,6 +78,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int INDEX_MIN_TEMP = 2;
     private static final int INDEX_SHORT_DESC = 3;
 
+    // Enumerating Status of Servers
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LOCATION_STATUS_OK, LOCATION_STATUS_SERVER_DOWN, LOCATION_STATUS_SERVER_INVALID, LOCATION_STATUS_UNKNOWN})
 
@@ -158,6 +159,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                setLocationStatus(getContext(), LOCATION_STATUS_SERVER_DOWN);
                 return;
             }
             forecastJsonStr = buffer.toString();
@@ -166,9 +168,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
+            setLocationStatus(getContext(), LOCATION_STATUS_SERVER_DOWN);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
+            setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         }finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -553,11 +557,13 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             Log.d(LOG_TAG, "SyncWeather Complete. " + inserted + " Inserted");
+            setLocationStatus(getContext(), LOCATION_STATUS_OK);
 
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
+            setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         }
     }
 
@@ -600,6 +606,14 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
+    }
+
+    // Set the location status into SharedPreference.
+    private static void setLocationStatus(Context context, @LocationStatus int locationStatus) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putInt(context.getString(R.string.pref_location_status_key), locationStatus);
+        sharedPreferencesEditor.commit();
     }
 
 }
