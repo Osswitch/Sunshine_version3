@@ -1,9 +1,11 @@
 package com.example.zhang.sunshine_version3.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,7 +27,8 @@ import com.example.zhang.sunshine_version3.app.sync.SunshineSyncAdapter;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
@@ -164,7 +167,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onResume() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_location_status_key))) {
+            updateEmptyView();
+        }
     }
 
     @Override
@@ -208,19 +227,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         mForecastAdapter.swapCursor(cursor);
 
-        if (mForecastAdapter.getCount() == 0) {
-            TextView textView = (TextView) getView().findViewById(R.id.textview_empty);
-
-            if (null != textView) {
-
-                int messageId = R.string.empty_view;
-                if ( !Utility.isNetworkAvailable(getActivity())) {
-                    messageId = R.string.empty_view_no_network;
-                }
-
-                textView.setText(messageId);
-            }
-        }
+        updateEmptyView();
 
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.setItemChecked(mPosition, true);
@@ -283,6 +290,29 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mUseTodayLayout = useTodayLayout;
         if (mForecastAdapter != null) {
             mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
+    }
+
+    private void updateEmptyView() {
+        if (mForecastAdapter.getCount() == 0) {
+            TextView textView = (TextView) getView().findViewById(R.id.textview_empty);
+            int messageId = R.string.empty_view;
+            @SunshineSyncAdapter.LocationStatus int location = Utility.getLocationStatus(getContext());
+
+            switch (location) {
+                case SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN:
+                    messageId = R.string.empty_forecast_list_server_down;
+                    break;
+                case SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID:
+                    messageId = R.string.empty_forecast_list_server_error;
+                    break;
+                default:
+                    if (!Utility.isNetworkAvailable(getActivity()) ) {
+                        messageId = R.string.empty_view_no_network;
+                    }
+            }
+
+            textView.setText(messageId);
         }
     }
 }
