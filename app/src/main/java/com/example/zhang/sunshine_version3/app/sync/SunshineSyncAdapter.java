@@ -577,6 +577,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.d(LOG_TAG, "SyncWeather Complete. " + inserted + " Inserted");
             setLocationStatus(getContext(), LOCATION_STATUS_OK);
+            int status = Utility.getLocationStatus(getContext());
 
 
         } catch (JSONException e) {
