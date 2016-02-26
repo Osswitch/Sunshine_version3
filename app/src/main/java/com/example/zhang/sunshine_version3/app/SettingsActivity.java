@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -81,6 +80,7 @@ public class SettingsActivity extends PreferenceActivity
 
     private void setPreferenceSummary(Preference preference, Object value) {
         String stringValue = value.toString();
+        String key = preference.getKey();
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
@@ -99,7 +99,7 @@ public class SettingsActivity extends PreferenceActivity
                     preference.setSummary(this.getString(R.string.no_wifi));
                 }
             }
-        } else if (preference instanceof EditTextPreference){
+        } else if (key.equals(getString(R.string.pref_location_key))){
             @SunshineSyncAdapter.LocationStatus int status = Utility.getLocationStatus(this);
 
             switch (status) {
