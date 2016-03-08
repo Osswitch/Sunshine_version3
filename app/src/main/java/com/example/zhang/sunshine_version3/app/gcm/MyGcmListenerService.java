@@ -47,15 +47,12 @@ public class MyGcmListenerService extends GcmListenerService {
             // Not a bad idea to check that the message is coming from your server.
             if ((senderId).equals(from)) {
                 // Process message and then post a notification of the received message.
-                 {
-                    //JSONObject jsonObject = new JSONObject(data.getString(EXTRA_DATA));
-                    String weather = data.getString(EXTRA_WEATHER);
-                    String location = data.getString(EXTRA_LOCATION);
-                    String alert =
-                            String.format(getString(R.string.gcm_weather_alert), weather, location);
-                    sendNotification(alert);
-                    Log.i(TAG, alert);
-                }
+                //JSONObject jsonObject = new JSONObject(data.getString(EXTRA_DATA));
+                String weather = data.getString(EXTRA_WEATHER);
+                String location = data.getString(EXTRA_LOCATION);
+                String alert = String.format(getString(R.string.gcm_weather_alert), weather, location);
+                sendNotification(alert);
+                Log.i(TAG, alert);
             }
             Log.i(TAG, "Received: " + data.toString());
         }
