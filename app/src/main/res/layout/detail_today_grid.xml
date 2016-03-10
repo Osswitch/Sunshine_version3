@@ -38,7 +38,7 @@
         tools:text="Today, April 03" />
 
     <ImageView
-        android:id="@+id/detail_icon"
+        android:id="@+id/detail_icon_imageview"
         android:layout_width="0dp"
         android:adjustViewBounds="true"
         android:maxHeight="@dimen/today_icon"

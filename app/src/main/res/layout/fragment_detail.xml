@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,7 +31,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -54,8 +53,8 @@
                 android:paddingRight="@dimen/forecast_detail_horizontal_padding"
                 android:id="@+id/detail_humidity_textview"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:fontFamily="sans-serif-light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@android:color/white"
                 tools:text="38%"/>
 
         </LinearLayout>
@@ -82,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_pressure_textview"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:textAppearanceLarge"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textColor="@android:color/white"
                 tools:text="995 hPa"/>
 
