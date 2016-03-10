@@ -227,20 +227,20 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         if (activity instanceof DetailActivity) {
             activity.supportStartPostponedEnterTransition();
 
-            if ( null != toolbarView ) {
+            if (null != toolbarView) {
                 activity.setSupportActionBar(toolbarView);
                 activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         } else {
-            if ( null != toolbarView ) {
+            if (null != toolbarView) {
                 Menu menu = toolbarView.getMenu();
-                if ( null != menu ) menu.clear();
+                if (null != menu) menu.clear();
                 toolbarView.inflateMenu(R.menu.menu_detail_fragment);
                 finishCreatingMenu(toolbarView.getMenu());
+            }
         }
     }
-}
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
