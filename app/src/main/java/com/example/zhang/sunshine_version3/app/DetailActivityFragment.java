@@ -9,8 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,14 +67,16 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public static final int COL_WEATHER_CONDITION_ID = 9;
 
     private ImageView mIconView;
-    private TextView mFriendlyDateView;
     private TextView mDateView;
     private TextView mDescriptionView;
     private TextView mHighTempView;
     private TextView mLowTempView;
     private TextView mHumidityView;
+    private TextView mHumidityLabelView;
     private TextView mWindView;
+    private TextView mWindLabelView;
     private TextView mPressureView;
+    private TextView mPressureLabelView;
 
     public DetailActivityFragment() {
     }
@@ -96,28 +99,31 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon_imageview);
         mDateView = (TextView) rootView.findViewById(R.id.detail_day_textview);
-        mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_description_textview);
         mHighTempView = (TextView) rootView.findViewById(R.id.detail_high_textview);
         mLowTempView = (TextView) rootView.findViewById(R.id.detail_low_textview);
         mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
+        mHumidityLabelView = (TextView) rootView.findViewById(R.id.detail_humidity_label_textview);
         mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
+        mWindLabelView = (TextView) rootView.findViewById(R.id.detail_wind_label_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+        mPressureLabelView = (TextView) rootView.findViewById(R.id.detail_pressure_label_textview);
 
         return rootView;
     }
 
+    private void finishCreatingMenu(Menu menu) {
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        menuItem.setIntent(shareForecastIntent());
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_detail_fragment, menu);
-        //Retrieve the share menu item
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        //Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-
-        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
-        if (mForecastStr != null) {
-            mShareActionProvider.setShareIntent(shareForecastIntent());
+        if ( getActivity() instanceof DetailActivity ){
+            // Inflate the menu; this adds items to the action bar if it is present.
+            inflater.inflate(R.menu.menu_detail_fragment, menu);
+            finishCreatingMenu(menu);
         }
     }
 
@@ -172,8 +178,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
         }
 
-        String day = Utility.getDayName(getActivity(), cursor.getLong(COL_WEATHER_DATE));
-        String date = Utility.getFormattedMonthDay(getActivity(), cursor.getLong(COL_WEATHER_DATE));
+        long date = cursor.getLong(COL_WEATHER_DATE);
         String weatherDescription = cursor.getString(COL_WEATHER_SHORT_DESC);
         Boolean isMetric = Utility.isMetric(getActivity());
         String maxTemperature = Utility
@@ -191,9 +196,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mForecastStr = date + " - " + weatherDescription + " - " + maxTemperature
                 + " / " + minTemperature;
 
-        mDateView.setText(day);
-
-        mFriendlyDateView.setText(date);
+        String dateText = Utility.getFriendlyDayString(getActivity(), date);
+        mDateView.setText(dateText);
 
         mHighTempView.setText(maxTemperature);
 
@@ -216,7 +220,27 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             mShareActionProvider.setShareIntent(shareForecastIntent());
         }
 
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Toolbar toolbarView = (Toolbar) getView().findViewById(R.id.detailFragment_toolbar);
+
+        // We need to start the enter transition after the data has loaded
+        if (activity instanceof DetailActivity) {
+            activity.supportStartPostponedEnterTransition();
+
+            if ( null != toolbarView ) {
+                activity.setSupportActionBar(toolbarView);
+                activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        } else {
+            if ( null != toolbarView ) {
+                Menu menu = toolbarView.getMenu();
+                if ( null != menu ) menu.clear();
+                toolbarView.inflateMenu(R.menu.menu_detail_fragment);
+                finishCreatingMenu(toolbarView.getMenu());
+        }
     }
+}
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {

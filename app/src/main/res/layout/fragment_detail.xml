@@ -1,116 +1,132 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detailFragment_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white" />
+
+    <include layout="@layout/detail_today_grid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"/>
 
     <LinearLayout
+        android:id="@+id/detail_additional_pane"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:gravity="center_vertical"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/detail_accent_pane_background"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="@dimen/abc_list_item_padding_horizontal_material"
+        android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
+        android:paddingLeft="@dimen/forecast_detail_horizontal_padding"
+        android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+        android:paddingStart="@dimen/forecast_detail_horizontal_padding"
+        android:paddingTop="@dimen/abc_list_item_padding_horizontal_material">
 
-        <!-- Header: Day, Date -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_day_textview"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/black"
-            android:textSize="24sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_date_textview"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/grey_700"
-            android:textSize="16sp"/>
-
-        <!-- Main content: high, low, art, weather state -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_marginTop="16sp">
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/detail_humidity_label_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_high_textview"
-                    android:textSize="94sp"
-                    android:fontFamily="sans-serif-light"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_low_textview"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="@color/grey_700"
-                    android:textSize="48sp"/>
-            </LinearLayout>
+                android:fontFamily="sans-serif"
+                android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
+                android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+                android:gravity="center_vertical"
+                android:text="@string/humidity"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/detail_accent_label" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal">
+                android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
+                android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+                android:id="@+id/detail_humidity_textview"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:fontFamily="sans-serif-light"
+                tools:text="38%"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_icon_imageview"
-                    android:adjustViewBounds="true"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceLarge"
-                    android:textColor="@color/grey_700"
-                    android:id="@+id/detail_description_textview"
-                    android:fontFamily="sans-serif-condensed"/>
-            </LinearLayout>
         </LinearLayout>
 
-        <!-- Humidity, wind, pressure -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_humidity_textview"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:fontFamily="sans-serif-light"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_wind_textview"
-                android:layout_marginTop="4dp"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:fontFamily="sans-serif-light"/>
+                android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
+                android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+                android:id="@+id/detail_pressure_label_textview"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/pressure"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/detail_accent_label" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_pressure_textview"
-                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:textAppearanceLarge"
-                android:fontFamily="sans-serif-light"/>
+                android:textColor="@android:color/white"
+                tools:text="995 hPa"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
+                android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+                android:id="@+id/detail_wind_label_textview"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/wind"
+                android:textColor="@color/detail_accent_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_wind_textview"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@android:color/white"
+                tools:text="4km/h NW"/>
         </LinearLayout>
 
 
     </LinearLayout>
 
-</ScrollView>
+    <ImageSwitcher
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageSwitcher"
+        android:layout_gravity="right" />
+
+
+</LinearLayout>
+
 
 
