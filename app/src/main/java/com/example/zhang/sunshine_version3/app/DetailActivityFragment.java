@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -153,6 +155,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             );
         }
 
+        ViewParent viewParent = getView().getParent();
+        if (viewParent instanceof CardView) {
+            ((View) viewParent).setVisibility(View.VISIBLE);
+        }
+
         return null;
     }
 
@@ -161,6 +168,11 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         if (!cursor.moveToFirst()) {
             return;
+        }
+
+        ViewParent viewParent = getView().getParent();
+        if (viewParent instanceof CardView) {
+            ((View) viewParent).setVisibility(View.VISIBLE);
         }
 
         int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
