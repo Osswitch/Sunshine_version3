@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +29,6 @@ import com.example.zhang.sunshine_version3.app.data.WeatherContract;
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
-    private ShareActionProvider mShareActionProvider;
     private static String FORECAST_SHARE_HASHTAG = " #SUNSHINEAPP";
 
     private static final int DETAIL_WEATHER_LOADER_ID = 0;
@@ -95,7 +93,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             mUri = bundle.getParcelable(DETAIL_URI);
         }
 
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
 
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon_imageview);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -214,11 +212,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mDescriptionView.setText(weatherDescription);
 
         mIconView.setContentDescription(weatherDescription);
-
-        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareForecastIntent());
-        }
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         Toolbar toolbarView = (Toolbar) getView().findViewById(R.id.detailFragment_toolbar);
