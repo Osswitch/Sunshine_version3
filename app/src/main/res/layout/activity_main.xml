@@ -1,35 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_forecast"
+    android:name="com.example.zhang.sunshine_version3.app.ForecastFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/mainActivity_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/fragment_forecast"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/listPreferredItemHeight"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_logo"
-            android:scaleType="center"
-            android:background="@color/color_primary"/>
-
-    </android.support.v7.widget.Toolbar>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_forecast"
-        android:name="com.example.zhang.sunshine_version3.app.ForecastFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@android:layout/list_content"/>
-
-</LinearLayout>
-
+    android:layout_height="match_parent"
+    tools:layout="@android:layout/list_content"/>
 
