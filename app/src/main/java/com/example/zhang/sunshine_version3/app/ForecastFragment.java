@@ -226,7 +226,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
 
         mForecastAdapter.swapCursor(cursor);
-        
+
         if (mPosition != RecyclerView.NO_POSITION) {
             //mRecyclerView.setItemChecked(mPosition, true);
             mRecyclerView.smoothScrollToPosition(mPosition);
