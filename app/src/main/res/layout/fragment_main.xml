@@ -47,7 +47,7 @@
             android:id="@+id/textview_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_anchor="@+id/recyclerview_forecast"
+            app:layout_anchor="@id/recyclerView_forecast"
             app:layout_anchorGravity="fill"
             android:text="@string/empty_view"
             android:gravity="center_horizontal"
