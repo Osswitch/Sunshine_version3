@@ -3,6 +3,7 @@ package com.example.zhang.sunshine_version3.app;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     final private Context mContext;
     final private ForecastAdapterOnClickHandler mClickHandler;
     final private View mEmptyView;
+    final private ItemChoiceManager mChoiceManager;
+
     /**
      *  Cache of the children views for a forecast list item
      */
@@ -58,6 +61,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             mCursor.moveToPosition(adapterPosition);
             int dateColumnIndex = mCursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE);
             mClickHandler.onClick(mCursor.getLong(dateColumnIndex), this);
+            mChoiceManager.onClick(this);
 
         }
     }
@@ -67,10 +71,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     }
 
 
-    public ForecastAdapter(Context context, ForecastAdapterOnClickHandler forecastAdapterOnClickHandler, View emptyView) {
+    public ForecastAdapter(Context context, ForecastAdapterOnClickHandler forecastAdapterOnClickHandler,
+                           View emptyView, int choiceMode) {
         mContext = context;
         mClickHandler = forecastAdapterOnClickHandler;
         mEmptyView = emptyView;
+        mChoiceManager = new ItemChoiceManager(this);
+        mChoiceManager.setChoiceMode(choiceMode);
     }
 
     /*
@@ -150,10 +157,24 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         double low = mCursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         forecastAdapterViewHolder.mLowTempView.setText(Utility.formatTemperature(mContext, low, isMetric));
 
+        mChoiceManager.onBindViewHolder(forecastAdapterViewHolder, position);
+
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mChoiceManager.onRestoreInstanceState(savedInstanceState);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        mChoiceManager.onSaveInstanceState(outState);
     }
 
     public void setUseTodayLayout(boolean useTodayLayout){
         mUseTodayLayout = useTodayLayout;
+    }
+
+    public int getSelectedItemPosition() {
+        return mChoiceManager.getSelectedItemPosition();
     }
 
     @Override
@@ -177,7 +198,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         return mCursor;
     }
 
-
-
+    public void selectView(RecyclerView.ViewHolder viewHolder) {
+        if ( viewHolder instanceof ForecastAdapterViewHolder ) {
+            ForecastAdapterViewHolder vfh = (ForecastAdapterViewHolder)viewHolder;
+            vfh.onClick(vfh.itemView);
+        }
+    }
 
 }
