@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.zhang.sunshine_version3.app.gcm.RegistrationIntentService;
 import com.example.zhang.sunshine_version3.app.sync.SunshineSyncAdapter;
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     }
 
     @Override
-    public void onItemSelected(Uri dateUri) {
+    public void onItemSelected(Uri dateUri, ForecastAdapter.ForecastAdapterViewHolder vh) {
         if (mTwoPane) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(DetailActivityFragment.DETAIL_URI, dateUri);
@@ -148,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                     .replace(R.id.weather_detail_container, df).commit();
         } else {
             Intent intent = new Intent(this, DetailActivity.class).setData(dateUri);
-            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                    new Pair<View, String>(vh.mIconView, getString(R.string.detail_icon_transition_name)));
             ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
 
         }

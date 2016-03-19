@@ -49,6 +49,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private boolean mUseTodayLayout;
     private boolean mAutoSelectView;
     private int mChoiceMode;
+    private boolean mHoldForTransition;
 
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -89,7 +90,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        public void onItemSelected(Uri dateUri, ForecastAdapter.ForecastAdapterViewHolder vh);
     }
 
     public ForecastFragment() {
@@ -129,6 +130,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         TypedArray a = activity.obtainStyledAttributes(attrs, R.styleable.ForecastFragment,0,0);
         mChoiceMode = a.getInt(R.styleable.ForecastFragment_android_choiceMode, AbsListView.CHOICE_MODE_NONE);
         mAutoSelectView = a.getBoolean(R.styleable.ForecastFragment_autoSelectView, false);
+        mHoldForTransition = a.getBoolean(R.styleable.ForecastFragment_sharedElementTransitions, false);
         a.recycle();
     }
 
@@ -157,7 +159,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 String locationSetting = Utility.getPreferredLocation(getActivity());
                 ((Callback) getActivity()).onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                         locationSetting, date
-                ));
+                ), forecastAdapterViewHolder);
                 mPosition = forecastAdapterViewHolder.getAdapterPosition();
             }
         }, emptyView, mChoiceMode);
@@ -236,6 +238,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // We hold for transition here just in-case the activity
+        // needs to be re-created. In a standard return transition,
+        // this doesn't actually make a difference.
+        if ( mHoldForTransition ) {
+            getActivity().supportPostponeEnterTransition();
+        }
         getLoaderManager().initLoader(FETCHER_WEATHER_LOADER_ID, null, this);
     }
 
@@ -282,7 +290,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         updateEmptyView();
 
-        if ( cursor.getCount() > 0 ) {
+        if ( cursor.getCount() == 0 ) {
+            getActivity().supportStartPostponedEnterTransition();
+        } else {
             mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -291,10 +301,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     if (mRecyclerView.getChildCount() > 0) {
                         mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
                         int itemPosition = mForecastAdapter.getSelectedItemPosition();
-                        if ( RecyclerView.NO_POSITION == itemPosition ) itemPosition = 0;
+                        if (RecyclerView.NO_POSITION == itemPosition) itemPosition = 0;
                         RecyclerView.ViewHolder vh = mRecyclerView.findViewHolderForAdapterPosition(itemPosition);
-                        if ( null != vh && mAutoSelectView ) {
-                            mForecastAdapter.selectView( vh );
+                        if (null != vh && mAutoSelectView) {
+                            mForecastAdapter.selectView(vh);
+                        }
+                        if ( mHoldForTransition ) {
+                            getActivity().supportStartPostponedEnterTransition();
                         }
                         return true;
                     }

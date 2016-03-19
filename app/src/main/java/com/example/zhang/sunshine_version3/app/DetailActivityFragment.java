@@ -35,10 +35,12 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     private static final int DETAIL_WEATHER_LOADER_ID = 0;
     public static final String DETAIL_URI = "URI";
+    static final String DETAIL_TRANSITION_ANIMATION = "DTA";
 
     private String mForecastStr;
 
     private Uri mUri;
+    private boolean mTransitionAnimation;
 
     private static final String[] DETAIL_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
@@ -93,6 +95,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         Bundle bundle = getArguments();
         if (bundle != null) {
             mUri = bundle.getParcelable(DETAIL_URI);
+            mTransitionAnimation = bundle.getBoolean(DetailActivityFragment.DETAIL_TRANSITION_ANIMATION, false);
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
@@ -120,7 +123,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if ( getActivity() instanceof DetailActivity ){
+        if ( mTransitionAnimation ){
             // Inflate the menu; this adds items to the action bar if it is present.
             inflater.inflate(R.menu.menu_detail_fragment, menu);
             finishCreatingMenu(menu);
