@@ -9,6 +9,9 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
+    <!-- Strings related to Widgets -->
+    <string name="title_widget_today">Sunshine Today</string>
+
     <!-- Indicating there are no messages -->
     <string name="empty_view">No Weather Information Available.</string>
 
@@ -34,10 +37,10 @@
     <string name="pref_location_latitude" translatable="false">loc-latitude</string>
     <string name="pref_location_longitude" translatable="false">loc-longitude</string>
 
-    <!--Key for the location setting-->
+    <!-- Key for the location setting -->
     <string name="pref_location_key" translatable="false">location</string>
 
-    <!--Default value for the location setting-->
+    <!-- Default value for the location setting -->
     <string name="pref_location_defValue" translatable="false">Montreal</string>
 
     <!-- Content description for the get current location button in the location preference -->
