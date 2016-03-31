@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.zhang.sunshine_version3.app.data.WeatherContract;
 import com.example.zhang.sunshine_version3.app.gcm.RegistrationIntentService;
 import com.example.zhang.sunshine_version3.app.sync.SunshineSyncAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mLocation = Utility.getPreferredLocation(this);
+        Uri contentUri = getIntent() != null ? getIntent().getData() : null;
 
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -51,9 +53,15 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             // adding or replacing the detail fragment using a
             // fragment transaction.
             if (savedInstanceState == null) {
+                DetailActivityFragment detailActivityFragment = new DetailActivityFragment();
+                if (contentUri != null) {
+                    Bundle args = new Bundle();
+                    args.putParcelable(DetailActivityFragment.DETAIL_URI, contentUri);
+                    detailActivityFragment.setArguments(args);
+                }
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.weather_detail_container,
-                                new DetailActivityFragment(), DETAILFRAGMENT_TAG).commit();
+                                detailActivityFragment, DETAILFRAGMENT_TAG).commit();
             }
         } else {
             mTwoPane = false;
@@ -62,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         ForecastFragment ff = (ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast);
         ff.setUseTodayLayout(!mTwoPane);
+        if (contentUri != null) {
+            ff.setInitialSelectedDate(WeatherContract.WeatherEntry.getDateFromUri(contentUri));
+
+        }
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
 
